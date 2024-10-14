@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  external_id: 1
+  height: 1
+  weight: 1
+  types: 
+
+two:
+  name: MyString
+  external_id: 1
+  height: 1
+  weight: 1
+  types: 
