@@ -78,7 +78,11 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: pokemon_api_production
-  username: pokemon_api
-  password: <%= ENV["POKEMON_API_DATABASE_PASSWORD"] %>
+  primary: &primary
+    url: <%= ENV["DATABASE_URL"] %>
+  cable:
+    <<: *primary
+  queue:
+    <<: *primary
+  cache:
+    <<: *primary

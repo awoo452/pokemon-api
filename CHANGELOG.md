@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0] - 2026-02-23
+### Added
+- Enable CORS via `rack-cors` middleware with `CORS_ORIGINS` support for browser clients.
+- `persist=false` option on `GET /pokemon/random` to skip database writes for stateless callers.
+- Initial heroku files
+- Production database config now mirrors multi-DB setup for cable/queue/cache using `DATABASE_URL`.
+
+### Changed
+- CORS configuration now explicitly allows `GET /pokemon/random`.
+- Upgraded Ruby to 4.0.1 and Rails to ~> 8.1.2 to match getawd.
+- Docker base image now tracks Ruby 4.0.1.
+
 ## [1.0.0] - 10/12/2024
 ### Added
 - Initial release with basic functionality for fetching random Pokémon, and populating the postgreSQL database with that info.
