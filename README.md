@@ -14,8 +14,9 @@ If you prefer manual setup:
 - `bin/rails server`
 
 ## Configuration
-- `CORS_ORIGINS`: Comma-separated list of allowed origins for browser clients (defaults to `*`).
+- `CORS_ORIGINS`: Comma-separated list of allowed origins for browser clients. If unset, development/test allows localhost and production defaults to the Gameboy web origins.
 - `DATABASE_URL`: Required in production; local development uses `config/database.yml`.
+- `RATE_LIMIT_PER_MINUTE`: Max requests per minute per IP for `GET /pokemon/random` (defaults to 3).
 - `RAILS_MAX_THREADS`: Connection pool size (defaults to 5).
 
 ## API
@@ -27,6 +28,8 @@ Query parameters:
 
 Side effects when `persist` is not `false`:
 - Creates a `Pokemon` record with `name`, `external_id`, `height`, `weight`, and `types`.
+
+If rate limited, the API returns `429` with a `Retry-After` header.
 
 ### `GET /up`
 Rails health check endpoint. Returns `200` if the app boots correctly.

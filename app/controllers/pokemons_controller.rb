@@ -1,8 +1,12 @@
 # app/controllers/pokemons_controller.rb
 class PokemonsController < ApplicationController
   def random
-    total_pokemon = PokemonService.total_pokemon
-    random_id = rand(1..total_pokemon)
+    max_id = if original_dex?
+      151
+    else
+      PokemonService.total_pokemon
+    end
+    random_id = rand(1..max_id)
     response = PokemonService.fetch_pokemon(random_id)
 
     persist = params.fetch(:persist, "true") != "false"
@@ -18,5 +22,12 @@ class PokemonsController < ApplicationController
     end
 
     render json: response.parsed_response
+  end
+
+  private
+
+  def original_dex?
+    value = params[:range].to_s.downcase
+    value == "original" || value == "gen1" || value == "kanto" || value == "151"
   end
 end

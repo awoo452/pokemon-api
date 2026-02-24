@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0] - 2026-02-24
+### Added
+- `range=original` option on `GET /pokemon/random` to limit results to the original 151.
+- Basic IP rate limiting on `GET /pokemon/random` (configurable via `RATE_LIMIT_PER_MINUTE`).
+
+### Changed
+- CORS defaults to the Gameboy web origins when `CORS_ORIGINS` is not set (no wildcard in production).
+
 ## [1.1.1] - 2026-02-24
 ### Changed
 - Expanded README into full project documentation (setup, configuration, endpoints, data model).
