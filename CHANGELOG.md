@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.1] - 2026-02-24
+### Changed
+- Expanded README into full project documentation (setup, configuration, endpoints, data model).
+
 ## [1.1.0] - 2026-02-23
 ### Added
 - Enable CORS via `rack-cors` middleware with `CORS_ORIGINS` support for browser clients.

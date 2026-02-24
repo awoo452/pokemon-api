@@ -1,57 +1,50 @@
-# README
+# Random Pokemon Generator API
 
-# Random Pokemon Generator
+## Overview
+This is a Ruby on Rails API that fetches a random Pokemon from the PokeAPI and optionally stores a subset of the data in PostgreSQL.
 
-## Description
-This is a Ruby on Rails API application that interfaces with the Pokémon API to retrieve and store Pokémon data. The application allows users to request random Pokémon and automatically saves some of their relevant details to a PostgreSQL database. 
+## Quickstart
+1. `bin/setup`
+2. `bin/rails server`
+3. `curl http://localhost:3000/pokemon/random`
 
-## Features
-- Fetches a random Pokémon from the Pokémon API.
-- Stores relevant Pokémon data in a PostgreSQL database, including:
-  - Name
-  - External ID
-  - Height
-  - Weight
-  - Types (stored as a JSONB field for flexibility)
-- Follows RESTful conventions for API design.
+If you prefer manual setup:
+- `bundle install`
+- `bin/rails db:prepare`
+- `bin/rails server`
 
-## Technologies Used
-- Ruby on Rails (version 7.1.4)
-- PostgreSQL (as the database)
-- RSpec (for testing)
-- [Pokémon API](https://pokeapi.co/api/v2/)
+## Configuration
+- `CORS_ORIGINS`: Comma-separated list of allowed origins for browser clients (defaults to `*`).
+- `DATABASE_URL`: Required in production; local development uses `config/database.yml`.
+- `RAILS_MAX_THREADS`: Connection pool size (defaults to 5).
 
-## Setup Instructions
+## API
+### `GET /pokemon/random`
+Returns a random Pokemon payload from the PokeAPI.
 
-### Prerequisites
-- Ruby (version 3.2)
-- Rails (version 7.1.4)
-- PostgreSQL (version 14.13)
-- Git (version 2.0 or higher)
-- Bundler (Version 2.5.17)
+Query parameters:
+- `persist=false`: Skip the database write. Default behavior persists the Pokemon.
 
-### Installation
+Side effects when `persist` is not `false`:
+- Creates a `Pokemon` record with `name`, `external_id`, `height`, `weight`, and `types`.
 
-1. Clone the repository:
+### `GET /up`
+Rails health check endpoint. Returns `200` if the app boots correctly.
 
-   ```bash
+## Data Model
+Table: `pokemon`
+- `name` (string)
+- `external_id` (integer)
+- `height` (integer)
+- `weight` (integer)
+- `types` (jsonb)
+- `created_at` / `updated_at`
 
-   git clone https://github.com/awoo452/pokemon_api.git
+## Tests
+- `bin/rails test`
 
-2. Figure out how to make it work
-
-## Usage Instructions
-
-### API Endpoints
-
-The application exposes the following API endpoint:
-
-- **GET** `/pokemon/random`:  
-  Generates a random Pokémon. This endpoint retrieves a Pokémon from the Pokémon API and saves some of its relevant details to the database.
-
-### Example Request
-
-To fetch a random Pokémon, you can use `curl`, Postman, or any HTTP client. Here’s an example using `curl`:
-
-```bash
-curl -X GET http://localhost:3000/pokemon/random
+## Tech Stack
+- Ruby 4.0.1
+- Rails ~> 8.1.2 (app config still loads 7.1 defaults)
+- PostgreSQL
+- HTTParty
