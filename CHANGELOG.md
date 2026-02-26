@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.3] - 2026-02-26
+### Changed
+- README.md updates. U can read them. I am le tired.
+
 ## [1.3.2] - 2026-02-26
 ### Fixed
 - Rate limiter responder now reads `rack.attack.match_data` from the request env, restoring proper 429 responses.

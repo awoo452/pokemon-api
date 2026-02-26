@@ -1,7 +1,7 @@
 # Random Pokemon Generator API
 
 ## Overview
-This is a Ruby on Rails API that fetches a random Pokemon from the PokeAPI and optionally stores a subset of the data in PostgreSQL.
+This is a Ruby on Rails API that fetches a random Pokemon from the PokeAPI, logs each request, and optionally stores a subset of the data in PostgreSQL.
 
 ## Quickstart
 1. `bin/setup`
@@ -25,9 +25,15 @@ Returns a random Pokemon payload from the PokeAPI.
 
 Query parameters:
 - `persist=false`: Skip the database write. Default behavior persists the Pokemon.
+- `range=original`: Limit random results to the original 151.
 
 Side effects when `persist` is not `false`:
 - Creates a `Pokemon` record with `name`, `external_id`, `height`, `weight`, and `types`.
+- Links the request log to the created Pokemon via `pokemon_id`.
+
+Request logging:
+- All API requests (except `GET /up`) are logged in `request_logs`.
+- Logs capture request metadata (method, path, IP, user agent, origin, params, status, duration, metadata).
 
 If rate limited, the API returns `429` with a `Retry-After` header.
 
@@ -41,6 +47,21 @@ Table: `pokemon`
 - `height` (integer)
 - `weight` (integer)
 - `types` (jsonb)
+- `created_at` / `updated_at`
+
+Table: `request_logs`
+- `request_id` (string)
+- `http_method` (string)
+- `path` (string)
+- `ip` (string)
+- `user_agent` (string)
+- `referer` (string)
+- `origin` (string)
+- `params` (jsonb)
+- `status` (integer)
+- `duration_ms` (integer)
+- `metadata` (jsonb)
+- `pokemon_id` (foreign key, nullable)
 - `created_at` / `updated_at`
 
 ## Tests
