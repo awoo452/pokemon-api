@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.1] - 2026-02-26
+### Added
+- Link request logs to persisted Pokemon records via `pokemon_id`.
+
+### Changed
+- Re-enabled persistence for `GET /pokemon/random` (default) while keeping `persist=false` for stateless callers.
+- Updated Rack::Attack config to use `throttled_responder` (deprecation fix).
+- Disabled Active Storage variants in API-only app to avoid image processing warnings.
+
 ## [1.3.0] - 2026-02-26
 ### Added
 - Request logging model + database table for capturing request metadata (method, path, IP, user agent, origin, params, status, duration, metadata).

@@ -25,6 +25,7 @@ class ApplicationController < ActionController::API
       referer: request.referer,
       origin: request.headers["Origin"],
       params: request_log_params,
+      pokemon_id: request_log_pokemon_id,
       status: response&.status || (error ? 500 : nil),
       duration_ms: duration_ms,
       metadata: build_request_log_metadata(error)
@@ -51,11 +52,22 @@ class ApplicationController < ActionController::API
     metadata.presence
   end
 
+  def request_log_pokemon_id
+    raw = request.env["request_log.pokemon_id"]
+    return if raw.blank?
+
+    raw.to_i
+  end
+
   def append_request_log_metadata(data)
     return if data.blank?
 
     existing = request.env["request_log.metadata"]
     existing = existing.is_a?(Hash) ? existing : {}
     request.env["request_log.metadata"] = existing.merge(data)
+  end
+
+  def set_request_log_pokemon_id(pokemon_id)
+    request.env["request_log.pokemon_id"] = pokemon_id
   end
 end

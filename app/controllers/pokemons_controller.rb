@@ -7,6 +7,19 @@ class PokemonsController < ApplicationController
     response = PokemonService.fetch_pokemon(random_id)
     payload = response.parsed_response
 
+    pokemon_record = nil
+    persist = params.fetch(:persist, "true") != "false"
+    if persist && payload.is_a?(Hash)
+      pokemon_record = Pokemon.create(
+        name: payload["name"],
+        external_id: payload["id"],
+        height: payload["height"],
+        weight: payload["weight"],
+        types: payload["types"]
+      )
+      set_request_log_pokemon_id(pokemon_record.id)
+    end
+
     append_request_log_metadata(
       pokemon: {
         "range" => range,
@@ -16,7 +29,8 @@ class PokemonsController < ApplicationController
         "types" => payload["types"],
         "upstream_status" => response.code
       },
-      persist_param: params[:persist]
+      persist_param: params[:persist],
+      pokemon_id: pokemon_record&.id
     )
 
     render json: payload
