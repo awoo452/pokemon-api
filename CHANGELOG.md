@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.2] - 2026-02-26
+### Fixed
+- Rate limiter responder now reads `rack.attack.match_data` from the request env, restoring proper 429 responses.
+
 ## [1.3.1] - 2026-02-26
 ### Added
 - Link request logs to persisted Pokemon records via `pokemon_id`.
