@@ -28,5 +28,8 @@ module PokemonApiApp
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # This API doesn't use Active Storage variants; disable to avoid warnings.
+    config.active_storage.variant_processor = :disabled
   end
 end

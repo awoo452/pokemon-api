@@ -16,7 +16,7 @@ Rack::Attack.throttle("pokemon/random by ip", limit: RATE_LIMIT_PER_MINUTE, peri
   end
 end
 
-Rack::Attack.throttled_response = lambda do |env|
+Rack::Attack.throttled_responder = lambda do |env|
   match_data = env["rack.attack.match_data"] || {}
   period = match_data[:period].to_i
   retry_after = period.positive? ? (period - (Time.now.to_i % period)) : 60

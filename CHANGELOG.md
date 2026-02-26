@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0] - 2026-02-26
+### Added
+- Request logging model + database table for capturing request metadata (method, path, IP, user agent, origin, params, status, duration, metadata).
+- Automatic request logging for API requests (excluding the `/up` health check).
+
+### Changed
+- `GET /pokemon/random` no longer writes to the `pokemon` table; it now records selected Pokémon details in request log metadata.
+
 ## [1.2.0] - 2026-02-24
 ### Added
 - `range=original` option on `GET /pokemon/random` to limit results to the original 151.

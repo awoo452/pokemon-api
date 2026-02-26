@@ -1,27 +1,25 @@
 # app/controllers/pokemons_controller.rb
 class PokemonsController < ApplicationController
   def random
-    max_id = if original_dex?
-      151
-    else
-      PokemonService.total_pokemon
-    end
+    range = original_dex? ? "original" : "all"
+    max_id = range == "original" ? 151 : PokemonService.total_pokemon
     random_id = rand(1..max_id)
     response = PokemonService.fetch_pokemon(random_id)
+    payload = response.parsed_response
 
-    persist = params.fetch(:persist, "true") != "false"
-    if persist
-      # Create a new Pokémon record
-      Pokemon.create(
-        name: response.parsed_response["name"],
-        external_id: response.parsed_response["id"],
-        height: response.parsed_response["height"],
-        weight: response.parsed_response["weight"],
-        types: response.parsed_response["types"]
-      )
-    end
+    append_request_log_metadata(
+      pokemon: {
+        "range" => range,
+        "requested_id" => random_id,
+        "external_id" => payload["id"],
+        "name" => payload["name"],
+        "types" => payload["types"],
+        "upstream_status" => response.code
+      },
+      persist_param: params[:persist]
+    )
 
-    render json: response.parsed_response
+    render json: payload
   end
 
   private
