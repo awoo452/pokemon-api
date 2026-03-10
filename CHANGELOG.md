@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.4] - 2026-02-26
+### Changed
+- improved README formatting and clarity for setup instructions, configuration, API, and data model
+
 ## [1.3.3] - 2026-02-26
 ### Changed
 - README.md updates. U can read them. I am le tired.
