@@ -8,7 +8,7 @@ class PokemonsController < ApplicationController
     payload = response.parsed_response
 
     pokemon_record = nil
-    persist = params.fetch(:persist, "true") != "false"
+    persist = params.fetch(:persist, "false") != "false"
     if persist && payload.is_a?(Hash)
       pokemon_record = Pokemon.create(
         name: payload["name"],

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.5] - 2026-03-10
+### Changed
+- Defaulted `GET /pokemon/random` to stateless (no DB write) unless `persist=true` is provided.
+
 ## [1.3.4] - 2026-02-26
 ### Changed
 - improved README formatting and clarity for setup instructions, configuration, API, and data model
