@@ -100,7 +100,7 @@ bin/rails test
 
 ## Tech Stack
 
-- Ruby 4.0.1
+- Ruby 4.0.2
 - Rails ~> 8.1.2 (app config still loads 7.1 defaults)
 - PostgreSQL
 - HTTParty
