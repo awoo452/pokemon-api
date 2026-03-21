@@ -1,5 +1,4 @@
 class LegalController < ApplicationController
-  layout false
   before_action :load_legal_content
 
   def terms
