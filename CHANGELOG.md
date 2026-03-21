@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.3.14] - 2026-03-21
+### Changed
+- Standardized changelog dates to YYYY-MM-DD.
+
 ## [1.3.13] - 2026-03-21
 ### Fixed
 - Removed the unsupported layout call in the legal controller for the API-only app.
@@ -103,7 +107,7 @@ spec/v2.0.0.html).
 - Upgraded Ruby to 4.0.1 and Rails to ~> 8.1.2 to match getawd.
 - Docker base image now tracks Ruby 4.0.1.
 
-## [1.0.0] - 10/12/2024
+## [1.0.0] - 2024-10-12
 ### Added
 - Initial release with basic functionality for fetching random Pokémon, and populating the postgreSQL database with that info.
 
