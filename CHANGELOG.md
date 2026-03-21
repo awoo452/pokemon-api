@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.3.11] - 2026-03-20
+### Added
+- Added system test scaffolding and a health check system test.
+- Added controller coverage for `GET /pokemon/random`.
+- Added GitHub Actions CI with Postgres-backed test and optional system test jobs.
+- Added Capybara for system test execution.
+
+### Changed
+- Run system tests unconditionally in CI to avoid workflow file parsing issues.
+- Synced schema to include the request log Pokemon reference so tests don't report pending migrations.
+- Updated the health check system test to assert status for the API-only response body.
+- Fixed controller test assertions to compare JSON response bodies correctly.
+
 ## [1.3.10] - 2026-03-19
 ### Changed
 - Renamed `PROCFILE` to `Procfile` for Heroku compatibility.

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_26_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -33,6 +33,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_000000) do
     t.string "origin"
     t.jsonb "params"
     t.string "path", null: false
+    t.bigint "pokemon_id"
     t.string "referer"
     t.string "request_id"
     t.integer "status"
@@ -41,6 +42,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_000000) do
     t.index ["created_at"], name: "index_request_logs_on_created_at"
     t.index ["ip"], name: "index_request_logs_on_ip"
     t.index ["path"], name: "index_request_logs_on_path"
+    t.index ["pokemon_id", "created_at"], name: "index_request_logs_on_pokemon_id_and_created_at"
+    t.index ["pokemon_id"], name: "index_request_logs_on_pokemon_id"
     t.index ["request_id"], name: "index_request_logs_on_request_id"
   end
+
+  add_foreign_key "request_logs", "pokemon"
 end
