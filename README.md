@@ -1,73 +1,41 @@
 # Random Pokemon Generator API
 
-## Overview
+## Features
 
-This Ruby on Rails API fetches a random Pokémon from the PokeAPI, logs each request, and can optionally store a subset of the data in PostgreSQL.
+A Ruby on Rails API that fetches a random Pokémon from the PokeAPI, logs each request, and can optionally store a subset of the data in PostgreSQL.
 
-## Quickstart
+### API
 
-1. Run `bin/setup`
-2. Start the server: `bin/rails server`
-3. Fetch a random Pokémon:  
-   `curl http://localhost:3000/pokemon/random`
+`GET /pokemon/random` returns a random Pokémon payload from the PokeAPI.
 
-**Manual setup:**
-- Install dependencies: `bundle install`
-- Prepare the database: `bin/rails db:prepare`
-- Start the server: `bin/rails server`
+Query parameters:
+- `persist=false` skips writing to the database (default persists the Pokémon).
+- `range=original` limits results to the original 151 Pokémon.
 
-## Configuration
+Side effects (when `persist` is not `false`):
+- Creates a `Pokemon` record with `name`, `external_id`, `height`, `weight`, `types`.
+- Links the request log to the created Pokémon via `pokemon_id`.
 
-- `CORS_ORIGINS` — Comma-separated list of allowed origins for browser clients.  
-  - If unset:  
-    - Development/test: allows localhost  
-    - Production: defaults to Gameboy web origins
+Request logging:
+- All API requests except `GET /up` are logged in the `request_logs` table.
+- Each log captures request metadata (HTTP method, path, IP address, user agent, origin, params, status, duration, metadata).
+
+Rate limiting:
+- If rate limited, returns HTTP `429` with a `Retry-After` header.
+
+`GET /up` is the Rails health check endpoint.
+
+### Configuration
+
+- `CORS_ORIGINS` — Comma-separated list of allowed origins for browser clients.
+  - If unset: development/test allow localhost; production defaults to Gameboy web origins.
 - `DATABASE_URL` — Required in production; local development uses `config/database.yml`.
 - `RATE_LIMIT_PER_MINUTE` — Max requests per minute per IP for `GET /pokemon/random` (default: 3).
 - `RAILS_MAX_THREADS` — Connection pool size (default: 5).
 
-## API
+### Data Model
 
-### `GET /pokemon/random`
-
-Returns a random Pokémon payload from the PokeAPI.
-
-#### Query parameters:
-- `persist=false` — Skip writing to the database (default persists the Pokémon).
-- `range=original` — Limit results to the original 151 Pokémon.
-
-#### Side effects (when `persist` is not `false`):
-- Creates a `Pokemon` record with:
-  - `name`
-  - `external_id`
-  - `height`
-  - `weight`
-  - `types`
-- Links the request log to the created Pokémon via `pokemon_id`.
-
-#### Request logging:
-- All API requests except `GET /up` are logged in the `request_logs` table.
-- Each log captures request metadata such as:
-  - HTTP method
-  - Path
-  - IP address
-  - User agent
-  - Origin
-  - Params
-  - Status
-  - Duration
-  - Metadata
-
-#### Rate limiting:
-- If rate limited, returns HTTP `429` with a `Retry-After` header.
-
-### `GET /up`
-
-Rails health check endpoint. Returns `200` if the app is running.
-
-## Data Model
-
-**Table: `pokemon`**
+Table: `pokemon`
 - `name` (string)
 - `external_id` (integer)
 - `height` (integer)
@@ -75,7 +43,7 @@ Rails health check endpoint. Returns `200` if the app is running.
 - `types` (jsonb)
 - `created_at` / `updated_at`
 
-**Table: `request_logs`**
+Table: `request_logs`
 - `request_id` (string)
 - `http_method` (string)
 - `path` (string)
@@ -90,21 +58,25 @@ Rails health check endpoint. Returns `200` if the app is running.
 - `pokemon_id` (foreign key, nullable)
 - `created_at` / `updated_at`
 
+## Setup
+
+1. `bin/setup`
+
+Manual setup:
+- `bundle install`
+- `bin/rails db:prepare`
+
+## Run
+
+1. `bin/rails server`
+
 ## Tests
 
-Run the tests with:
+1. `bin/rails test`
+2. `bin/rails test:system`
 
-```
-bin/rails test
-```
+## Changelog
 
-## Tech Stack
+See [`CHANGELOG.md`](CHANGELOG.md) for notable changes.
 
-- Ruby 4.0.2
-- Rails ~> 8.1.2 (app config still loads 7.1 defaults)
-- PostgreSQL
-- HTTParty
-
----
-
-*Pokémon and Pokémon character names are trademarks of Nintendo.*
+Pokémon and Pokémon character names are trademarks of Nintendo.
