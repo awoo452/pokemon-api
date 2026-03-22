@@ -1,22 +1,20 @@
-class LegalController < ApplicationController
+class LegalController < ActionController::Base
+  layout false
   before_action :load_legal_content
 
   def terms
     @page = @legal_content.fetch("terms")
     @page_title = @page["title"]
-    render :terms
   end
 
   def privacy
     @page = @legal_content.fetch("privacy")
     @page_title = @page["title"]
-    render :privacy
   end
 
   def accessibility
     @page = @legal_content.fetch("accessibility")
     @page_title = @page["title"]
-    render :accessibility
   end
 
   private
