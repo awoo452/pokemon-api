@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+
+begin
+  load Gem.bin_path("importmap-rails", "importmap")
+rescue Gem::Exception
+  warn "importmap-rails is not in the bundle. Skipping importmap."
+  exit 0
+end
