@@ -25,6 +25,15 @@ Rate limiting:
 
 `GET /up` is the Rails health check endpoint.
 
+### Legal Pages (HTML)
+
+This API-only app also serves minimal HTML legal pages for compliance-friendly, stable URLs:
+- `GET /terms`
+- `GET /privacy`
+- `GET /accessibility`
+
+The content is stored in `config/legal_content.json` and rendered by a lightweight controller/view.
+
 ### Configuration
 
 - `CORS_ORIGINS` — Comma-separated list of allowed origins for browser clients.
