@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_28_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "pokemon", force: :cascade do |t|
+  create_table "pokemon_api_pokemon", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "external_id"
     t.integer "height"
@@ -24,7 +24,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_000001) do
     t.integer "weight"
   end
 
-  create_table "request_logs", force: :cascade do |t|
+  create_table "pokemon_api_request_logs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "duration_ms"
     t.string "http_method", null: false
@@ -39,13 +39,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_000001) do
     t.integer "status"
     t.datetime "updated_at", null: false
     t.string "user_agent"
-    t.index ["created_at"], name: "index_request_logs_on_created_at"
-    t.index ["ip"], name: "index_request_logs_on_ip"
-    t.index ["path"], name: "index_request_logs_on_path"
-    t.index ["pokemon_id", "created_at"], name: "index_request_logs_on_pokemon_id_and_created_at"
-    t.index ["pokemon_id"], name: "index_request_logs_on_pokemon_id"
-    t.index ["request_id"], name: "index_request_logs_on_request_id"
+    t.index ["created_at"], name: "index_pokemon_api_request_logs_on_created_at"
+    t.index ["ip"], name: "index_pokemon_api_request_logs_on_ip"
+    t.index ["path"], name: "index_pokemon_api_request_logs_on_path"
+    t.index ["pokemon_id", "created_at"], name: "index_pokemon_api_request_logs_on_pokemon_id_and_created_at"
+    t.index ["pokemon_id"], name: "index_pokemon_api_request_logs_on_pokemon_id"
+    t.index ["request_id"], name: "index_pokemon_api_request_logs_on_request_id"
   end
 
-  add_foreign_key "request_logs", "pokemon"
+  add_foreign_key "pokemon_api_request_logs", "pokemon_api_pokemon", column: "pokemon_id"
 end

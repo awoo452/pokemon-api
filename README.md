@@ -44,7 +44,7 @@ The content is stored in `config/legal_content.json` and rendered by a lightweig
 
 ### Data Model
 
-Table: `pokemon`
+Table: `pokemon_api_pokemon`
 - `name` (string)
 - `external_id` (integer)
 - `height` (integer)
@@ -52,7 +52,7 @@ Table: `pokemon`
 - `types` (jsonb)
 - `created_at` / `updated_at`
 
-Table: `request_logs`
+Table: `pokemon_api_request_logs`
 - `request_id` (string)
 - `http_method` (string)
 - `path` (string)
