@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.3.29] - 2026-07-20
+### Security
+- Ran `bundler-audit`, which was failing in CI on `main` — none of these had open dependabot PRs (transitive/indirect dependencies aren't covered by the scheduled version-update config the same way direct Gemfile gems are). Bumped: `rack` 3.2.5 → 3.2.6 (multiple CVEs: multipart parsing DoS/host-spoofing/directory disclosure family), `nokogiri` 1.19.2 → 1.19.4 (multiple use-after-free/out-of-bounds advisories), `rack-session` 2.1.1 → 2.1.2 (GHSA-33qg-7wpp-89cq, secretless session forgery fallback), `loofah` 2.25.1 → 2.25.2, `rails-html-sanitizer` 1.7.0 → 1.7.1 (possible XSS), `crass` 1.0.6 → 1.0.7 (four CSS-parsing DoS advisories), `mcp` 0.10.0 → 0.25.0 (five advisories: memory exhaustion, session poisoning, DNS-rebinding), `websocket-driver` 0.8.0 → 0.8.2 (four advisories), `net-imap` 0.6.3 → 0.6.4.1 (six advisories, dev-only via rubocop/brakeman toolchain, not something this app's runtime touches), `addressable` 2.8.9 → 2.9.0 (ReDoS), `concurrent-ruby` 1.3.6 → 1.3.8, `msgpack` 1.8.0 → 1.8.3 (use-after-free), `json` 2.19.3 → 2.21.1, `erb` 6.0.2 → 6.0.6 (deserialization guard bypass). All transitive, no direct Gemfile changes. `bundler-audit check` and `brakeman` both clean afterward.
+
 ## [1.3.28] - 2026-07-20
 ### Security
 - Cleared 5 open dependabot PRs that had been sitting unmerged since 2026-05-29: `puma` 8.0.0 → 8.0.2, `bootsnap` 1.23.0 → 1.24.6, `brakeman` 8.0.4 → 8.0.5, `actions/checkout` v6 → v7, `actions/cache` v5 → v6. Applied directly against `main` via `bundle update`/workflow edit rather than merging the stale PR branches.
