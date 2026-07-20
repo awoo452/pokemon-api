@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.3.28] - 2026-07-20
+### Security
+- Cleared 5 open dependabot PRs that had been sitting unmerged since 2026-05-29: `puma` 8.0.0 → 8.0.2, `bootsnap` 1.23.0 → 1.24.6, `brakeman` 8.0.4 → 8.0.5, `actions/checkout` v6 → v7, `actions/cache` v5 → v6. Applied directly against `main` via `bundle update`/workflow edit rather than merging the stale PR branches.
+
 ## [1.3.27] - 2026-03-30
 ### Changed
 - Updated mcp to 0.10.0 to address CVE-2026-33946.
