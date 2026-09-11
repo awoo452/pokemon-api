@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.3.30] - 2026-09-11
+### Added
+- `CLAUDE.md`: points agents at the Rails Playbook, lists the rules broken most often, and says which of the playbook's `hosting/` notes apply here.
+- `AGENTS.md`: sends Codex and other agents to `CLAUDE.md`.
+### Changed
+- `ai_dev_agent.py`: writes a versioned entry per the playbook's Rule 2 instead of an `## Unreleased` bullet — the bullet names the file, and an uncommitted top entry gets the bullet instead of a new version; drops "small bug fixes" from what it may change, since Rule 10 wants a test it can't write.
+
 ## [1.3.29] - 2026-07-20
 ### Security
 - Ran `bundler-audit`, which was failing in CI on `main` — none of these had open dependabot PRs (transitive/indirect dependencies aren't covered by the scheduled version-update config the same way direct Gemfile gems are). Bumped: `rack` 3.2.5 → 3.2.6 (multiple CVEs: multipart parsing DoS/host-spoofing/directory disclosure family), `nokogiri` 1.19.2 → 1.19.4 (multiple use-after-free/out-of-bounds advisories), `rack-session` 2.1.1 → 2.1.2 (GHSA-33qg-7wpp-89cq, secretless session forgery fallback), `loofah` 2.25.1 → 2.25.2, `rails-html-sanitizer` 1.7.0 → 1.7.1 (possible XSS), `crass` 1.0.6 → 1.0.7 (four CSS-parsing DoS advisories), `mcp` 0.10.0 → 0.25.0 (five advisories: memory exhaustion, session poisoning, DNS-rebinding), `websocket-driver` 0.8.0 → 0.8.2 (four advisories), `net-imap` 0.6.3 → 0.6.4.1 (six advisories, dev-only via rubocop/brakeman toolchain, not something this app's runtime touches), `addressable` 2.8.9 → 2.9.0 (ReDoS), `concurrent-ruby` 1.3.6 → 1.3.8, `msgpack` 1.8.0 → 1.8.3 (use-after-free), `json` 2.19.3 → 2.21.1, `erb` 6.0.2 → 6.0.6 (deserialization guard bypass). All transitive, no direct Gemfile changes. `bundler-audit check` and `brakeman` both clean afterward.

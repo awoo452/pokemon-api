@@ -1,5 +1,6 @@
 import subprocess
 import os
+import re
 from datetime import datetime
 from openai import OpenAI
 
@@ -67,7 +68,6 @@ Allowed improvements:
 - documentation
 - readability
 - comments
-- small bug fixes
 - README cleanup
 
 Return ONLY the filename.
@@ -148,7 +148,8 @@ if not diff.strip():
 # -----------------------------
 
 changelog_prompt = f"""
-Write ONE changelog bullet describing this change.
+Describe this change as ONE short present-tense fact for a changelog bullet.
+The file path is added separately; do not repeat it.
 
 Rules:
 - 5 to 15 words
@@ -169,52 +170,64 @@ entry = resp3.output_text.strip()
 print("Changelog entry:", entry)
 
 # -----------------------------
-# insert into CHANGELOG
+# insert into CHANGELOG (Rails playbook, Rule 2)
 # -----------------------------
+# One versioned entry per commit, and each bullet names the file it touches.
+# If the top entry is not in HEAD's copy of the file it is still in progress,
+# so the bullet joins it instead of minting another version. This script only
+# makes behavior-free edits, so a new entry is always a PATCH bump.
+
+HEADING = re.compile(r"^## \[(\d+)\.(\d+)\.(\d+)\]", re.M)
+TODAY = datetime.now().strftime("%Y-%m-%d")
+bullet = f"- `{target}`: {entry}\n"
+
+
+def published_versions():
+    head = subprocess.run(
+        ["git", "show", f"HEAD:{CHANGELOG}"], capture_output=True, text=True
+    ).stdout
+    found = {tuple(map(int, m)) for m in HEADING.findall(head)}
+    subjects = subprocess.run(
+        ["git", "log", "--format=%s", "-n", "100"], capture_output=True, text=True
+    ).stdout
+    for subject in subjects.splitlines():
+        m = re.fullmatch(r"\s*v?(\d+)\.(\d+)\.(\d+)\s*", subject)
+        if m:
+            found.add(tuple(map(int, m.groups())))
+    return found
+
 
 if not os.path.exists(CHANGELOG):
-    with open(CHANGELOG,"w") as f:
-        f.write("# Changelog\n\n## Unreleased\n")
+    with open(CHANGELOG, "w") as f:
+        f.write("# Changelog\n\n")
 
-with open(CHANGELOG,"r") as f:
-    lines = f.readlines()
+with open(CHANGELOG, "r") as f:
+    text = f.read()
 
-unreleased_index = None
-for i, line in enumerate(lines):
-    if line.strip().lower() == "## unreleased":
-        unreleased_index = i
-        break
+published = published_versions()
+top = HEADING.search(text)
+top_version = tuple(map(int, top.groups())) if top else None
 
-if unreleased_index is None:
-    lines = ["## Unreleased\n", "\n"] + lines
-    unreleased_index = 0
-elif unreleased_index != 0:
-    end_index = unreleased_index + 1
-    while end_index < len(lines):
-        if lines[end_index].startswith("## ") and end_index != unreleased_index:
-            break
-        end_index += 1
-    unreleased_section = lines[unreleased_index:end_index]
-    del lines[unreleased_index:end_index]
-    lines = unreleased_section + lines
-    unreleased_index = 0
+if top and top_version not in published:
+    # In progress: the bullet goes under the top entry's "### Changed".
+    next_entry = HEADING.search(text, top.end())
+    section_end = next_entry.start() if next_entry else len(text)
+    changed = re.search(r"^### Changed\n", text[top.end():section_end], re.M)
+    if changed:
+        at = top.end() + changed.end()
+        text = text[:at] + bullet + text[at:]
+    else:
+        at = text.index("\n", top.end()) + 1
+        text = text[:at] + "### Changed\n" + bullet + text[at:]
+    version = ".".join(map(str, top_version))
+else:
+    newest = max(published, default=top_version or (0, 0, 0))
+    version = f"{newest[0]}.{newest[1]}.{newest[2] + 1}"
+    new_entry = f"## [{version}] - {TODAY}\n### Changed\n{bullet}\n"
+    at = top.start() if top else len(text)
+    text = text[:at] + new_entry + text[at:]
 
-insert_index = unreleased_index + 1
-if insert_index < len(lines) and lines[insert_index].strip() == "":
-    insert_index += 1
+with open(CHANGELOG, "w") as f:
+    f.write(text)
 
-lines.insert(insert_index, f"- {entry}\n")
-
-next_index = insert_index + 1
-scan_index = next_index
-while scan_index < len(lines) and lines[scan_index].strip() == "":
-    scan_index += 1
-
-if scan_index < len(lines) and lines[scan_index].startswith("## "):
-    if next_index >= len(lines) or lines[next_index].strip() != "":
-        lines.insert(next_index, "\n")
-
-with open(CHANGELOG,"w") as f:
-    f.writelines(lines)
-
-print("CHANGELOG updated.")
+print(f"CHANGELOG updated under {version}.")
