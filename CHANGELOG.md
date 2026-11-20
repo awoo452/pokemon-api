@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.3.31] - 2026-11-18
+PM-061 — Rails 8.1.4.1 security bump in every app
+### Fixed
+- `Gemfile.lock`: Rails 8.1.4.1 clears Action Dispatch RemoteIp spoofing (GHSA-2gff-2mmg-m73p).
+- `Gemfile.lock`: rails-html-sanitizer 1.7.2, loofah 2.25.3, and nokogiri 1.19.7, which Rails 8.1.4.1 requires.
+- `Gemfile.lock`: puma 8.1.2 clears five worker hang and exhaustion advisories (GHSA-jm4r-w4xx-qxw7, GHSA-m5xw-3hrw-qcmf, GHSA-rf6g-xhmp-gm7v, GHSA-x646-wp7c-h9mg, GHSA-xw3h-pgr9-3vg7).
+- `Gemfile.lock`: puma 8.1.2 clears pumactl TLS identity and cipher-filter advisories (GHSA-86xc-wrr9-xmmq, GHSA-r885-m39c-939g).
+- `Gemfile.lock`: msgpack 1.8.7 clears uncapped JRuby header allocations (CVE-2026-126366).
+- `Gemfile.lock`: addressable 2.9.2 clears template ReDoS advisories (GHSA-4w5q-wg7v-w6gp, GHSA-9f42-57jx-vpp3, GHSA-j82w-28jv-3pmj).
+- `Gemfile.lock`: addressable 2.9.2 clears URI normalization advisories (GHSA-qq38-m9mg-xjj5, GHSA-8gmh-2hhj-2hv9).
+- `Gemfile.lock`: addressable 2.9.2 clears misleading-host advisories (GHSA-539f-xcgw-2gjg, GHSA-9crm-g4mf-wc5j).
+- `Gemfile.lock`: crass 1.0.8 clears the CSS sanitizer bypass (GHSA-pq4g-8rxf-4g29).
+- `Gemfile.lock`: json 2.21.2 clears the parser use-after-free (CVE-2026-71847).
+- `Gemfile.lock`: mail 2.9.1 clears encoded-word address spoofing (GHSA-mvxr-6m87-mv2q).
+- `Gemfile.lock`: rack 3.2.8 clears multipart memory exhaustion (GHSA-5v64-555j-wjxm).
+- `Gemfile.lock`: rack 3.2.8 clears boundary and static-path bypasses (GHSA-p8x9-v4hv-2w4g, GHSA-wvg4-6p58-3gh3).
+- `Gemfile.lock`: rack 3.2.8 clears invalid Host handling (GHSA-2j8w-xcrc-x985).
+- `Gemfile.lock`: rubocop 1.92.3 no longer needs mcp, clearing its SSRF advisory (GHSA-4m5j-jjfc-97gx).
+- `Gemfile.lock`: brakeman 8.1.0 satisfies the scanner's required latest release.
+### Added
+- `Gemfile.lock`: a CHECKSUMS block, which the publish gate requires.
+### Removed
+- `Gemfile.lock`: mcp, json_schemer, hana, and simpleidn, which only the old rubocop needed.
+### Changed
+- `.github/workflows/ci.yml`: every job runs on Ubuntu 24.04; ubuntu-latest has no Ruby 4.0.2.
+- `.github/workflows/ci.yml`: every job has a time limit.
+- `.github/workflows/ci.yml`: the gem scan runs `bin/bundler-audit check --update`.
+
 ## [1.3.30] - 2026-09-11
 ### Added
 - `CLAUDE.md`: points agents at the Rails Playbook, lists the rules broken most often, and says which of the playbook's `hosting/` notes apply here.
