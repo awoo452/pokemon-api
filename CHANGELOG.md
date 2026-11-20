@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.3.32] - 2026-11-20
+PM-193 — One version-bump pull request per repo from its Dependabot branches
+### Changed
+- `Gemfile.lock`: `httparty` 0.24.2 to 0.24.3.
+- `Gemfile.lock`: `pg` 1.6.3 to 1.7.0.
+- `Gemfile.lock`: `bootsnap` 1.24.6 to 1.26.1.
+
 ## [1.3.31] - 2026-11-18
 PM-061 — Rails 8.1.4.1 security bump in every app
 ### Fixed
